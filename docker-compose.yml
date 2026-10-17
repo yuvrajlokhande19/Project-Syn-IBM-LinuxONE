@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mainframe-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project-syn-mainframe
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - MAINFRAME_SECRET_KEY=mainframe_secret_key
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./03-mainframe-core/data:/app/03-mainframe-core/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/stats"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  telemetry-simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project-syn-simulator
+    restart: always
+    depends_on:
+      - mainframe-core
+    environment:
+      - MAINFRAME_URL=http://mainframe-core:8000/api/telemetry/ingest
+      - MAINFRAME_SECRET_KEY=mainframe_secret_key
+    command: ["python3", "02-logic-engine/telemetry_simulator.py"]
