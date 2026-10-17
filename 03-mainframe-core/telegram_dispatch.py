@@ -565,7 +565,7 @@ def format_alert_message(
 _LAST_DISPATCH_TIMESTAMPS: Dict[str, float] = {}
 _GLOBAL_LAST_DISPATCH_TIME: float = 0.0
 ALERT_COOLDOWN_SECONDS = 180.0  # Minimum 3 minutes between identical hospital incidents
-GLOBAL_ALERT_COOLDOWN_SECONDS = 90.0  # Minimum 90 seconds between ANY automated background alert
+GLOBAL_ALERT_COOLDOWN_SECONDS = 120.0  # Minimum 90 seconds between ANY automated background alert
 TELEGRAM_BROADCAST_ENABLED = True  # Can be toggled on/off by operator via UI or bot command
 
 
@@ -790,6 +790,7 @@ def dispatch_alert(
 
     recipients = {str(target_chat)}
     for member in TELEGRAM_TEAM_MEMBERS:
+        # Strictly skip members awaiting user start (e.g. Bhavya) to prevent 403 looping
         if member.get("status") == "DELIVERED":
             recipients.add(str(member["id"]))
 

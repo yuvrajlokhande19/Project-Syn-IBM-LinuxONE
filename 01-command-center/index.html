@@ -255,18 +255,23 @@
                 </div>
             </div>
 
-            <!-- Middle Sovereignty Selector -->
-            <div class="flex items-center bg-[#10141d] p-1 rounded-lg border border-zinc-800 text-xs font-medium">
-                <span class="text-[11px] text-zinc-400 px-2 font-mono uppercase">SOVEREIGNTY MODE:</span>
-                <button id="mode-btn-connected" class="px-3 py-1 rounded text-[11px] font-semibold bg-sky-600 text-white shadow transition-all">
-                    1: CONNECTED (CLOUD API)
-                </button>
-                <button id="mode-btn-sovereign" class="px-3 py-1 rounded text-[11px] text-zinc-400 hover:text-amber-300 transition-all">
-                    2: SOVEREIGN (LORA MESH)
-                </button>
-                <button id="mode-btn-degraded" class="px-3 py-1 rounded text-[11px] text-zinc-400 hover:text-red-300 transition-all">
-                    3: DEGRADED (FALLBACK)
-                </button>
+            <!-- Middle Sovereignty Mode Controller with Tactile Button Affordance -->
+            <div class="flex items-center bg-[#10141d] p-1 rounded-lg border border-zinc-700/80 text-xs font-mono shadow-inner">
+                <span class="text-[10px] text-zinc-400 px-2 uppercase font-bold tracking-wider">SOVEREIGNTY:</span>
+                <div class="flex items-center gap-1">
+                    <button id="mode-btn-connected" class="sovereignty-btn active px-3 py-1.5 rounded-md text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow bg-sky-600 text-white border border-sky-400" title="Full Cloud Uplink: High-Speed Gemini & OpenRouter AI">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>1: CONNECTED</span>
+                    </button>
+                    <button id="mode-btn-sovereign" class="sovereignty-btn px-3 py-1.5 rounded-md text-[11px] font-bold text-zinc-400 hover:text-amber-300 border border-transparent hover:border-zinc-700 transition-all flex items-center gap-1.5 cursor-pointer" title="Air-Gapped Sovereign: Local Big-Endian s390x AI Engine + LoRa Mesh">
+                        <span class="w-2 h-2 rounded-full bg-zinc-600"></span>
+                        <span>2: SOVEREIGN (LORA)</span>
+                    </button>
+                    <button id="mode-btn-degraded" class="sovereignty-btn px-3 py-1.5 rounded-md text-[11px] font-bold text-zinc-400 hover:text-rose-300 border border-transparent hover:border-zinc-700 transition-all flex items-center gap-1.5 cursor-pointer" title="Emergency Fallback: Deterministic Survival Heuristics">
+                        <span class="w-2 h-2 rounded-full bg-zinc-600"></span>
+                        <span>3: DEGRADED</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Tactile Internet Uplink Online/Air-Gapped Toggle -->
@@ -403,7 +408,7 @@
         </div>
 
         <!-- ==================== HOSPITAL INTERNAL BLUEPRINT & TACTICAL FLOOR PLAN MODAL ==================== -->
-        <div id="kem-blueprint-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div id="kem-blueprint-modal" class="hidden fixed inset-0 z-[9999999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md overflow-y-auto" onclick="event.stopPropagation()">
             <div class="admin-card w-full max-w-4xl max-h-[92vh] overflow-y-auto p-6 space-y-4 border-sky-500/50 shadow-2xl">
                 <!-- Header -->
                 <div class="flex items-center justify-between pb-3 border-b border-zinc-700">
@@ -1181,6 +1186,88 @@
                     </div>
                 </div>
             </div>
+
+        </section>
+
+        
+                <!-- ==================== AUTONOMOUS MULTI-TIER AI CASCADE ROUTER ==================== -->
+                <div class="admin-card p-4 space-y-3 font-mono text-xs mt-4">
+                    <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+                        <div>
+                            <h4 class="text-sm font-bold text-white uppercase flex items-center gap-2">
+                                <span>🔀</span> AUTONOMOUS AI CASCADE ROUTER &amp; LOAD-SHEDDING SENTINEL
+                            </h4>
+                            <p class="text-[11px] text-zinc-400 font-sans">Automatic Multi-Tier Model Switching on Rate Limits (HTTP 429) &amp; Air-Gapped Blackout</p>
+                        </div>
+                        <span id="cascade-active-tier-badge" class="px-2.5 py-1 rounded bg-sky-950 text-sky-400 border border-sky-800 text-[10px] font-bold">
+                            ACTIVE: TIER 1 (GOOGLE GEMINI)
+                        </span>
+                    </div>
+
+                    <!-- Visual Tier Flow -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                        <!-- Tier 1 -->
+                        <div id="cascade-tier-1" class="p-3 rounded bg-zinc-950 border border-sky-600/80 space-y-1.5 shadow-sm">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-sky-400">TIER 1: PRIMARY CLOUD</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">NORMAL</span>
+                            </div>
+                            <div class="text-[11px] text-white font-bold">Google Gemini 1.5 Pro / Flash</div>
+                            <div class="text-[10px] text-zinc-400">1,000,000 Tokens · High-speed multi-hospital reasoning</div>
+                            <div class="text-[9px] text-emerald-400">● 100% Quota Available</div>
+                        </div>
+
+                        <!-- Tier 2 -->
+                        <div id="cascade-tier-2" class="p-3 rounded bg-zinc-950 border border-zinc-800 space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-zinc-300">TIER 2: RATE-LIMIT FAILOVER</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">STANDBY</span>
+                            </div>
+                            <div class="text-[11px] text-white font-bold">Gemini 1.5 Flash-8B / Gemini-Pro</div>
+                            <div class="text-[10px] text-zinc-400">Triggers on HTTP 429 / Quota saturation</div>
+                            <div class="text-[9px] text-zinc-500">Auto-engages &lt;0.4s</div>
+                        </div>
+
+                        <!-- Tier 3 -->
+                        <div id="cascade-tier-3" class="p-3 rounded bg-zinc-950 border border-zinc-800 space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-zinc-300">TIER 3: MULTI-PROVIDER FREE</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">STANDBY</span>
+                            </div>
+                            <div class="text-[11px] text-white font-bold">OpenRouter Free Models</div>
+                            <div class="text-[10px] text-zinc-400">Meta LLaMA 3.2 3B · Mistral 7B · Qwen 2.5</div>
+                            <div class="text-[9px] text-zinc-500">Zero-cost multi-cloud redundancy</div>
+                        </div>
+
+                        <!-- Tier 4 -->
+                        <div id="cascade-tier-4" class="p-3 rounded bg-zinc-950 border border-emerald-800 space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-emerald-400">TIER 4: AIR-GAPPED CORE</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">PERSISTENT</span>
+                            </div>
+                            <div class="text-[11px] text-white font-bold">IBM Granite 3.0 1.5B (s390x)</div>
+                            <div class="text-[10px] text-zinc-400">1.18 GB INT4 · Big-Endian Native · 12ms/tok</div>
+                            <div class="text-[9px] text-emerald-400">● 100% Guaranteed Autonomy</div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Test Console -->
+                    <div class="pt-2 border-t border-zinc-800 flex flex-wrap gap-2 items-center">
+                        <span class="text-[10px] text-zinc-400 uppercase font-bold">Simulate Cascade Failover:</span>
+                        <button onclick="simulateCascadeSwitch('google')" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-sky-300 border border-zinc-700 text-xs transition cursor-pointer">
+                            ☁️ Tier 1 (Gemini)
+                        </button>
+                        <button onclick="simulateCascadeSwitch('openrouter')" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-amber-300 border border-zinc-700 text-xs transition cursor-pointer">
+                            ⚡ Tier 3 (OpenRouter)
+                        </button>
+                        <button onclick="simulateCascadeSwitch('local')" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-emerald-300 border border-zinc-700 text-xs transition cursor-pointer">
+                            🧠 Tier 4 (s390x Granite 1.5B)
+                        </button>
+                        <button onclick="simulateCascadeSwitch('auto')" class="px-2.5 py-1 rounded bg-sky-950 hover:bg-sky-900 text-sky-200 border border-sky-600 text-xs font-bold transition cursor-pointer">
+                            🔄 Auto-Cascade Router
+                        </button>
+                    </div>
+                </div>
 
         </section>
 
@@ -4330,6 +4417,32 @@ Type any authorized command below or click a quick action above to execute.</div
         document.addEventListener('DOMContentLoaded', () => {
             initHospitalIdentity();
         });
+    
+    
+        // ==================== AUTONOMOUS AI CASCADE FAILOVER SIMULATOR ====================
+        window.simulateCascadeSwitch = function(tier) {
+            const badge = document.getElementById('cascade-active-tier-badge');
+            const t1 = document.getElementById('cascade-tier-1');
+            const t2 = document.getElementById('cascade-tier-2');
+            const t3 = document.getElementById('cascade-tier-3');
+            const t4 = document.getElementById('cascade-tier-4');
+            [t1, t2, t3, t4].forEach(t => t && (t.className = "p-3 rounded bg-zinc-950 border border-zinc-800 space-y-1.5"));
+
+            if (tier === 'google') {
+                if (badge) badge.innerText = "ACTIVE: TIER 1 (GOOGLE GEMINI 1.5 PRO)";
+                if (t1) t1.className = "p-3 rounded bg-zinc-950 border-2 border-sky-500 shadow-lg space-y-1.5";
+            } else if (tier === 'openrouter') {
+                if (badge) badge.innerText = "ACTIVE: TIER 3 (OPENROUTER FREE CASCADE)";
+                if (t3) t3.className = "p-3 rounded bg-zinc-950 border-2 border-amber-500 shadow-lg space-y-1.5";
+            } else if (tier === 'local') {
+                if (badge) badge.innerText = "ACTIVE: TIER 4 (IBM s390x GRANITE 1.5B - 1.18GB)";
+                if (t4) t4.className = "p-3 rounded bg-zinc-950 border-2 border-emerald-500 shadow-lg space-y-1.5";
+            } else {
+                if (badge) badge.innerText = "ACTIVE: AUTO-CASCADE (GEMINI -> OPENROUTER -> s390x)";
+                if (t1) t1.className = "p-3 rounded bg-zinc-950 border border-sky-500/80 space-y-1.5";
+                if (t4) t4.className = "p-3 rounded bg-zinc-950 border border-emerald-800 space-y-1.5";
+            }
+        };
     
     </script>
 </body>
