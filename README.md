@@ -3,6 +3,7 @@
 
 ---
 
+![Project Syn Enterprise Blueprint](Project_Syn_Enterprise_Blueprint.png)
 ![Project Syn Architecture Blueprint](Project_Syn_Architecture.png)
 ![Project Syn System Flowchart](Project_Syn_Flowchart.png)
 
@@ -130,9 +131,12 @@ python3 -m uvicorn main:app --app-dir 03-mainframe-core --host 0.0.0.0 --port 80
 ---
 
 ## 👥 Engineering Team & Roles
-- **System Architecture & Hardware Cryptography:** Dual-node IBM LinuxONE bare-metal setup, CPACF gate, SQLite WAL ledger.
-- **Safety-Bounded AI & Routing:** Snap ML anomaly models, Dijkstra elevation graph, OpenCity CKAN harvester.
-- **Command Center & Emergency UI:** CARTO GIS mapping, tactical floor plan blueprints, TV Kiosk mode, Telegram responder agent.
+- **Yuvraj Lokhande** — *Chief Incident Commander & System Architect* (Dual-Node IBM LinuxONE III `s390x` Deployment, CPACF Cryptographic Gate, Immutable SQLite WAL Ledger, OpenAPI Specification).
+- **Palak** — *Ambulance Fleet & Green Corridor Lead* (Deterministic Dijkstra Routing Algorithm, Mumbai Elevated Flyover Bypass, Emergency Vehicle Transit Dispatch).
+- **Anshika Tripathi** — *Clinical AI & Triage Model Director* (Snap ML Random Forest Anomaly Detector, OpenCity CKAN Ingestion Pipeline, Trilingual s390x Local Model).
+- **Nidhi** — *ICU Supply & Blood Logistics Lead* (Inter-Hospital Blood Reserve Rebalancing, Cryogenic Liquid Oxygen & Genset Diesel Optimization).
+- **Ritesh** — *Municipal Disaster Response & Security Authority* (Zero-Trust Threat Sentinel Matrix, Anti-Replay Nonce Ring Buffer, Hardware Firmware Verification).
+- **Bhavya** — *Municipal Power Grid & Substation Controller* (BEST 22kV Electrical Grid Continuity, SCADA ATS Feeder Telemetry).
 
 ---
 
