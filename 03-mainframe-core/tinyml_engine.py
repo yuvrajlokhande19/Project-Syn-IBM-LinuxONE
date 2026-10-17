@@ -216,25 +216,71 @@ class DistilledCognitiveEngine:
         ]
         self.reasoning_vectors_count = 3840
         self.concept_embeddings = {
+            "greeting": {
+                "keywords": ["hi", "hello", "hey", "talk", "who are you", "namaste", "halo"],
+                "urgency": "OPERATIONAL_READY",
+                "reasoning": "Incident Command AI Core stands operational on IBM LinuxONE s390x. Supervising real-time clinical telemetry, zero-trust HMAC packets, and resource balancing for KEM Hospital Command Apex and Tata Memorial Trauma Hub.",
+                "action": "Ready for operator input. Request ICU bed allocation, ambulance green corridor dispatch, blood bank reserves, or report active emergency."
+            },
+            "emergency": {
+                "keywords": ["emergency", "accident", "chest pain", "trauma", "cardiac", "stroke", "bleeding", "critical", "help", "save", "pain"],
+                "urgency": "CRITICAL_LEVEL_1",
+                "reasoning": "Active clinical trauma triage engaged. Directing casualty to nearest Level-1 Trauma Resuscitation Center at KEM Hospital Parel (40 SICU beds, 18 surgical suites ready) with secondary routing to Sion Hospital LTMMC.",
+                "action": "Lock Dr. Ambedkar Road green corridor signals; alert on-duty trauma surgeon Dr. Aarav Mehta; pre-stage 4 units O-negative blood."
+            },
+            "beds": {
+                "keywords": ["bed", "beds", "icu", "capacity", "vacan", "occupan"],
+                "urgency": "HIGH_AVAILABILITY",
+                "reasoning": "Metropolitan ICU grid reports 156 total critical care beds available across Mumbai. KEM Hospital Command Apex has 38 beds, Tata Memorial has 32 beds, and Sion Hospital has 24 beds immediately accessible.",
+                "action": "Corridors open for patient transfer; maintain real-time telemetry polling over Sub-GHz mesh."
+            },
             "blood": {
-                "urgency": "HIGH",
-                "reasoning": "Acute hemorrhage requires uncrossmatched O-negative or type-specific blood within 15 minutes to avoid hypovolemic shock. KEM Hospital Parel possesses highest apex reserve buffer (45 O- units).",
+                "keywords": ["blood", "o-neg", "plasma", "platelets"],
+                "urgency": "HIGH_RESOURCE_PRIORITY",
+                "reasoning": "Acute hemorrhage requires uncrossmatched O-negative or type-specific blood within 15 minutes to avoid hypovolemic shock. KEM Hospital Parel possesses highest apex reserve buffer (45 O- units), supplemented by Tata Memorial (40 units).",
                 "action": "Trigger P2P transfer corridor from KEM Hospital Parel with siren priority."
             },
             "fire": {
-                "urgency": "CRITICAL",
+                "keywords": ["fire", "smoke", "burn", "explosion"],
+                "urgency": "CRITICAL_LIFE_SAFETY",
                 "reasoning": "High-voltage transformer arcing creates toxic smoke and rapid oxygen line ignition hazard. Substation electrical isolation required before water suppression.",
                 "action": "Trip BEST 22kV dual-substation breaker, evacuate adjacent wards via Zone-A Lalbaug ramp, alert Byculla fire station."
             },
             "flood": {
-                "urgency": "ELEVATED",
+                "keywords": ["flood", "water", "rain", "monsoon", "waterlog"],
+                "urgency": "ELEVATED_WEATHER_ALERT",
                 "reasoning": "Hindmata, Parel TT, and Milan Subway lowlands become impassable during monsoon high-tide at flood_index > 0.45. Ambulances risk engine hydrolock.",
                 "action": "Reroute ambulances via Lalbaug Flyover Elevated Corridor and Western Express Highway; activate LoRa Sub-GHz radio mesh for telemetry."
             },
             "ambulance": {
-                "urgency": "HIGH",
+                "keywords": ["ambulance", "transit", "corridor", "route"],
+                "urgency": "HIGH_DISPATCH_SPEED",
                 "reasoning": "Golden hour trauma window requires transit latency under 12 minutes. Pre-clearing smart traffic signals along Dr. Ambedkar Road increases survival probability by 43%.",
                 "action": "Signal pre-emption engaged on Lalbaug corridor; KEM Hospital Level-1 Resuscitation bay placed on Trauma Code Alpha."
+            },
+            "kem": {
+                "keywords": ["kem", "seth gs", "parel"],
+                "urgency": "COMMAND_APEX_ONLINE",
+                "reasoning": "KEM Hospital & Seth GS Medical College serves as the primary Command Apex for Mumbai. Facilities include 1,800+ beds, 180 ICU beds, 13,000L liquid oxygen plant, and dual 22kV BEST power feeds.",
+                "action": "Command Apex status nominal; running Node 1 IBM LinuxONE primary control plane."
+            },
+            "tata": {
+                "keywords": ["tata", "tmh", "cancer"],
+                "urgency": "STANDBY_NODE_ACTIVE",
+                "reasoning": "Tata Memorial Hospital operates as the secondary disaster command hub and specialized trauma node in Parel. Backed by standby Node 2 Mainframe replica with real-time SQLite write-ahead ledger replication.",
+                "action": "Standby Node 2 operational; 700+ beds and 75 critical care suites online."
+            },
+            "marathi": {
+                "keywords": ["मदत", "रुग्णवाहिका", "नमस्कार", "डॉक्टर", "रक्त", "पूर", "मराठी"],
+                "urgency": "तातडीची मदत (URGENT)",
+                "reasoning": "मुंबई आपत्कालीन आरोग्य ग्रिड (KEM रुग्णालय व टाटा मेमोरियल) पूर्ण क्षमतेने कार्यरत आहे. केईएम ट्रॉमा बेड्स, आयसीयू आणि ओ-निगेटिव्ह रक्तसाठा आपत्कालीन सेवेसाठी सज्ज आहेत.",
+                "action": "डॉ. बाबासाहेब आंबेडकर उड्डाणपूल ग्रीन कॉरिडॉर रुग्णवाहिकेसाठी खुला करण्यात आला आहे."
+            },
+            "hindi": {
+                "keywords": ["मदद", "अस्पताल", "नमस्ते", "इलाज", "खून", "बाढ़", "हिंदी"],
+                "urgency": "आपातकालीन सेवा (URGENT)",
+                "reasoning": "मुंबई महानगरीय स्वास्थ्य ग्रिड (केईएम अस्पताल कमांड एपेक्स एवं टाटा मेमोरियल ट्रॉमा हब) पूरी तरह से सक्रिय है। ट्रॉमा आईसीयू बेड्स और ओ-नेगेटिव ब्लड रिजर्व तैयार हैं।",
+                "action": "लालबाग फ्लाईओवर एवं डॉ. आंबेडकर रोड एलिवेटेड कॉरिडोर एम्बुलेंस के लिए निर्बाध रूप से खुला है।"
             }
         }
 
@@ -247,15 +293,16 @@ class DistilledCognitiveEngine:
 
         matched_concept = None
         for key, concept in self.concept_embeddings.items():
-            if key in scen_lower:
+            keywords = concept.get("keywords", [key])
+            if any(k in scen_lower for k in keywords):
                 matched_concept = concept
                 break
 
         if not matched_concept:
             matched_concept = {
-                "urgency": "NOMINAL_MONITOR",
-                "reasoning": "Vital clinical metrics and utility telemetry remain within safe operating parameters across the Mumbai metropolitan health grid.",
-                "action": "Maintain active telemetry polling."
+                "urgency": "NORMAL_MONITORING",
+                "reasoning": f"Incident Command AI Core processed query: '{scenario}'. Clinical telemetry and grid infrastructure remain stable across Mumbai Central, KEM Hospital, and Tata Memorial.",
+                "action": "Maintain active CPACF telemetry polling; ready for incident directives."
             }
 
         elapsed_ms = round((time.perf_counter() - t0) * 1000, 3)

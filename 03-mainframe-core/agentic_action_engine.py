@@ -542,7 +542,7 @@ class AgenticActionDispatcher:
             return self._execute_math_logic_analysis(q)
 
         # 5. Action / Operational Intel: Detailed Hospital Facility Status
-        if any(w in q for w in ["hospital", "रुग्णालय", "अस्पताल", "kem", "sion", "jj", "nair", "lilavati", "hinduja", "cooper", "aims", "aiims", "yes hospital"]) and any(w in q for w in ["about", "information", "info", "tell me", "details", "status", "माहिती", "जानकारी", "yes hospital", "aims"]):
+        if any(w in q for w in ["hospital", "रुग्णालय", "अस्पताल", "kem", "sion", "jj", "nair", "lilavati", "hinduja", "cooper", "tata", "nanavati", "kokilaben"]) and any(w in q for w in ["about", "information", "info", "tell me", "details", "status", "माहिती", "जानकारी"]):
             return self._execute_hospital_info_query(q)
 
         # 6. Action / Recon: Satellite Emergency Radar & SAR Flood Mapping

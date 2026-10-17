@@ -215,6 +215,29 @@
         body.theme-tata .hospital-header-glow {
             box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
         }
+
+        /* High-Contrast Leaflet Popup Dark Theme (Fixes white-on-white text) */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background-color: #0b111a !important;
+            color: #f1f5f9 !important;
+            border: 1px solid #1e293b !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8) !important;
+        }
+        .leaflet-popup-tip {
+            background-color: #0b111a !important;
+            border: 1px solid #1e293b !important;
+        }
+        .leaflet-popup-content {
+            margin: 10px 12px !important;
+            line-height: 1.4 !important;
+        }
+        .leaflet-container a.leaflet-popup-close-button {
+            color: #94a3b8 !important;
+            padding: 6px !important;
+        }
+        .leaflet-container a.leaflet-popup-close-button:hover {
+            color: #38bdf8 !important;
+        }
     
     </style>
     <link id="app-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImtnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAyODRjNyIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDgyZjQ5IiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9InVybCgja2cpIiBzdHJva2U9IiMzOGJkZjgiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjI2IiBmaWxsPSJub25lIiBzdHJva2U9IiMzOGJkZjgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNiAzIi8+CiAgPHBhdGggZD0iTSAyOCAxNCBIIDM2IFYgMjggSCA1MCBWIDM2IEggMzYgViA1MCBIIDI4IFYgMzYgSCAxNCBWIDI4IEggMjggWiIgZmlsbD0iI2ZmZmZmZiIgLz4KICA8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSI0IiBmaWxsPSIjMzhiZGY4IiAvPgo8L3N2Zz4=">
@@ -1401,7 +1424,7 @@
                             <button onclick="setMeshQuickMsg('ICU Ward B low on O-Neg blood, request emergency drone/corridor resupply.')" class="px-2 py-0.5 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-[10px]">
                                 🩸 Blood Shortage
                             </button>
-                            <button onclick="setMeshQuickMsg('Ambulance Alpha-01 en route with severe trauma victim, ETA 8 mins to GMC ICU.')" class="px-2 py-0.5 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-[10px]">
+                            <button onclick="setMeshQuickMsg('Ambulance Alpha-01 en route with severe trauma victim, ETA 8 mins to KEM Hospital Level-1 Trauma ICU.')" class="px-2 py-0.5 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-[10px]">
                                 🚑 Ambulance Trauma ETA
                             </button>
                             <button onclick="setMeshQuickMsg('Dr. Babasaheb Ambedkar Road flyover cleared for emergency ambulance green corridor.')" class="px-2 py-0.5 rounded bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-[10px]">
@@ -1748,12 +1771,12 @@
                 </div>
             </div>
 
-            <!-- NAGPUR METROPOLITAN 12-HOSPITAL ICU & DISASTER LOGISTICS MATRIX -->
+            <!-- MUMBAI METROPOLITAN 12-HOSPITAL ICU & DISASTER LOGISTICS MATRIX -->
             <div class="admin-card p-4 space-y-3 font-mono text-xs">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-2 border-b border-zinc-800 gap-2">
                     <div>
                         <h4 class="text-sm font-bold text-white uppercase flex items-center gap-2">
-                            <span>🏥</span> NAGPUR METROPOLITAN 12-FACILITY ICU BED &amp; DISASTER LOGISTICS GRID
+                            <span>🏥</span> MUMBAI METROPOLITAN 12-FACILITY ICU BED &amp; DISASTER LOGISTICS GRID
                         </h4>
                         <p class="text-[11px] text-zinc-400 font-sans">Full Autonomous Arbitrator · Live Blood Reserves, Genset Diesel Runtimes &amp; Instant Green Corridor Locking</p>
                     </div>
@@ -2550,11 +2573,11 @@ Type any authorized command below or click a quick action above to execute.</div
                 `;
 
                 const popupHtml = `
-                    <div class="font-mono text-xs p-1.5 space-y-1.5 min-w-[220px] text-zinc-200">
-                        <div class="font-bold text-white text-[13px] border-b border-zinc-700 pb-1 flex items-center justify-between">
-                            <span>${h.name}</span>
+                    <div class="font-mono text-xs p-1.5 space-y-1.5 min-w-[220px] text-zinc-100" style="color: #f1f5f9 !important;">
+                        <div class="font-extrabold text-white text-[13px] border-b border-zinc-700/80 pb-1 flex items-center justify-between" style="color: #ffffff !important;">
+                            <span class="text-white font-extrabold tracking-wide" style="color: #ffffff !important;">${h.name}</span>
                         </div>
-                        <div class="grid grid-cols-2 gap-1 text-[10px]">
+                        <div class="grid grid-cols-2 gap-1 text-[10px]" style="color: #cbd5e1 !important;">
                             <div>ICU Avail: <strong class="text-emerald-400 font-bold">${availBeds} / ${h.icu_total} Beds</strong></div>
                             <div>O- Blood: <strong class="text-rose-400 font-bold">${oNeg} Units</strong></div>
                             <div>Genset: <strong class="text-amber-400 font-bold">${dieselHours} hrs</strong></div>
@@ -4222,9 +4245,9 @@ Type any authorized command below or click a quick action above to execute.</div
                 const bPos = h.blood_stock ? (h.blood_stock["B+"] || 0) : 0;
                 const dieselHours = h.diesel_liters ? Math.round(h.diesel_liters / 80) : 24;
                 
-                let tierBadge = '<span class="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-[10px]">District Center</span>';
-                if (h.id.includes('AIIMS') || h.id.includes('GMC')) tierBadge = '<span class="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold">Apex Level-1 Trauma</span>';
-                else if (h.id.includes('Kingsway') || h.id.includes('Wockhardt') || h.id.includes('Alexis')) tierBadge = '<span class="px-1.5 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800 text-[10px] font-bold">Super Specialty</span>';
+                let tierBadge = '<span class="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-[10px]">Tertiary Hospital</span>';
+                if (h.id.includes('KEM') || h.id.includes('Sion') || h.id.includes('Tata')) tierBadge = '<span class="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold">Apex Level-1 Trauma</span>';
+                else if (h.id.includes('Lilavati') || h.id.includes('JJ') || h.id.includes('Nanavati') || h.id.includes('Hinduja')) tierBadge = '<span class="px-1.5 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800 text-[10px] font-bold">Super Specialty</span>';
 
                 let bedColor = availBeds > 8 ? "text-emerald-400" : (availBeds > 3 ? "text-amber-400" : "text-rose-400 font-bold");
 

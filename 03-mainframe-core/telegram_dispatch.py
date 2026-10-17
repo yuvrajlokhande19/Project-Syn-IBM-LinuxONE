@@ -36,18 +36,19 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
 # Cascade lineup ordered by capacity and rate resilience
 GEMINI_MODELS = [
-    "gemini-3.8-flash",
-    "gemini-3.5-flash",
-    "gemini-3.5-flash-lite",
-    "gemini-3.1-flash-lite"
+    "gemini-3-flash-preview",
+    "gemini-flash-latest",
+    "gemini-3.1-pro-preview",
+    "gemini-3.1-flash-lite-preview",
+    "gemini-pro-latest"
 ]
 
 OPENROUTER_MODELS = [
-    "nvidia/nemotron-3.5-lightning:free",
-    "liquid/lfm-2.5-2.6b:free",
-    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-    "nvidia/nemotron-3-ultra-550b-a55b:free",
-    "google/gemma-4-26b-a4b-it:free"
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "qwen/qwen-2.5-72b-instruct:free",
+    "deepseek/deepseek-r1:free",
+    "google/gemini-2.0-flash-exp:free",
+    "mistralai/mistral-7b-instruct:free"
 ]
 
 GROQ_MODELS = [
@@ -58,7 +59,7 @@ GROQ_MODELS = [
 
 AI_STATUS_TRACKER = {
     "provider": "Google Gemini",
-    "active_model": "gemini-3.8-flash",
+    "active_model": "gemini-3-flash-preview",
     "mode": "auto",  # auto, google, groq, openrouter, puter, local
     "input_token_limit": 1048576,
     "last_switch_time": None,
@@ -76,7 +77,7 @@ def set_ai_provider(mode: str) -> Dict[str, Any]:
     
     if target_mode == "google":
         AI_STATUS_TRACKER["provider"] = "Google Gemini"
-        AI_STATUS_TRACKER["active_model"] = "gemini-3.8-flash"
+        AI_STATUS_TRACKER["active_model"] = "gemini-3-flash-preview"
         AI_STATUS_TRACKER["input_token_limit"] = 1048576
     elif target_mode == "groq":
         AI_STATUS_TRACKER["provider"] = "Groq Cloud High-Speed Llama 3.3"
@@ -84,7 +85,7 @@ def set_ai_provider(mode: str) -> Dict[str, Any]:
         AI_STATUS_TRACKER["input_token_limit"] = 131072
     elif target_mode == "openrouter":
         AI_STATUS_TRACKER["provider"] = "OpenRouter Multi-Cloud"
-        AI_STATUS_TRACKER["active_model"] = "meta-llama/llama-3.3-70b-instruct"
+        AI_STATUS_TRACKER["active_model"] = "meta-llama/llama-3.3-70b-instruct:free"
         AI_STATUS_TRACKER["input_token_limit"] = 128000
     elif target_mode == "puter":
         AI_STATUS_TRACKER["provider"] = "Puter.js Zero-Credential Cloud AI"
@@ -96,7 +97,7 @@ def set_ai_provider(mode: str) -> Dict[str, Any]:
         AI_STATUS_TRACKER["input_token_limit"] = 4096
     else:
         AI_STATUS_TRACKER["provider"] = "Auto-Failover (Gemini -> Groq -> OpenRouter -> Local)"
-        AI_STATUS_TRACKER["active_model"] = "gemini-3.8-flash"
+        AI_STATUS_TRACKER["active_model"] = "gemini-3-flash-preview"
         AI_STATUS_TRACKER["input_token_limit"] = 1048576
 
     AI_STATUS_TRACKER["switch_history"].append(f"[{now_iso}] User switched AI mode to: {target_mode.upper()}")
@@ -176,9 +177,9 @@ def generate_local_s390x_llm(
 def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dict[str, Any]] = None) -> str:
     """
     Onboard Local Disaster & Clinical Knowledge Engine (100% Air-Gapped s390x).
-    Provides rich, domain-grounded intelligence regarding Mumbai Metropolitan Region (MMR)
-    and KEM Hospital Command Apex, bed vacancies, trauma facilities, blood supply,
-    evacuation corridors, and architectural status.
+    Provides rich, domain-grounded intelligence regarding Mumbai Metropolitan Region (MMR),
+    KEM Hospital Command Apex, Tata Memorial Trauma Hub, bed vacancies, trauma facilities,
+    blood supply, evacuation corridors, and architectural status.
     """
     q = query.lower().strip()
     metrics = extra_metrics or {}
@@ -186,7 +187,35 @@ def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dic
     blood_val = metrics.get("blood_units_o_neg", 120)
     diesel_val = metrics.get("diesel_fuel_liters", 8500)
 
-    # 1. KEM Hospital & Seth GS Medical College (Command Apex)
+    # 1. Greetings & Conversational Inquiries
+    if any(k in q for k in ("hi", "hello", "hey", "greetings", "namaste", "halo", "morning", "evening")):
+        return (
+            "👋 **PROJECT SYN INCIDENT COMMAND // IBM LINUXONE s390x**\n\n"
+            "Welcome, Dispatcher / Clinician. I am your autonomous AI operations officer operating on-premise at the Mumbai Metropolitan Health Grid (KEM Hospital Command Apex & Tata Memorial Trauma Hub).\n\n"
+            "How can I assist your operation right now? You can:\n"
+            "• Inquire about hospital ICU bed vacancies ('beds', 'KEM capacity', 'Tata Memorial')\n"
+            "• Request green corridor route clearance ('route to Sion', 'ambulance corridor')\n"
+            "• Query blood bank & utility reserves ('blood stock', 'diesel genset status')\n"
+            "• Report clinical or physical distress ('emergency', 'cardiac trauma', 'flood report')\n"
+            "• Converse in English, Hindi, or Marathi."
+        )
+
+    # 2. Emergency & Medical Distress Response
+    if any(k in q for k in ("emergency", "accident", "trauma", "chest pain", "bleeding", "stroke", "cardiac", "urgent", "help", "save", "critical", "pain")):
+        return (
+            "🚨 **[TACTICAL EMERGENCY PROTOCOL ENGAGED // LEVEL-1 CODE ALPHA]**\n\n"
+            "Emergency distress signal acknowledged. Local clinical response is prioritized:\n\n"
+            "1. **Nearest Apex Resuscitation Centers:**\n"
+            "   • **KEM Hospital Level-1 Trauma Resuscitation Bay (Parel):** 40 SICU/Trauma beds ready, 18 Modular Surgical Theatres staffed.\n"
+            "   • **Sion Hospital (LTMMC) Emergency Trauma Center:** 35 Critical Care beds ready with direct ramp off Eastern Express Highway.\n\n"
+            "2. **Immediate Directive:**\n"
+            "   • Dispatched ALS Ambulance Alpha-01 via Lalbaug Flyover Green Corridor (ETA: 7 mins).\n"
+            "   • KEM Blood Transfusion Center alerted: 45 units O-Negative blood pre-staged.\n"
+            "   • Trauma Surgeon Dr. Aarav Mehta paged on Mainframe Fiber Bus #01.\n\n"
+            "3. **First-Response Guidance:** Keep patient warm and airway clear. Do not move patient if spinal injury is suspected. Medical crew is locked on GPS corridor."
+        )
+
+    # 3. KEM Hospital & Seth GS Medical College (Command Apex)
     if any(k in q for k in ("kem", "king edward", "seth gs", "parel")):
         return (
             "🏥 *KEM HOSPITAL & SETH G.S. MEDICAL COLLEGE // COMMAND APEX*\n"
@@ -199,8 +228,19 @@ def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dic
             "• *Disaster Corridor:* Elevated Lalbaug Flyover Green Corridor links directly to Sir JJ Hospital and Dr. Ambedkar Road."
         )
 
-    # 2. Sion Hospital / LTMMC (Apex Trauma Hub)
-    if any(k in q for k in ("sion", "ltmmc", "lokmanya")):
+    # 4. Tata Memorial Hospital (Trauma Hub & Secondary Apex)
+    if any(k in q for k in ("tata", "tmh", "cancer", "dr. e borges")):
+        return (
+            "🏥 *TATA MEMORIAL HOSPITAL // TRAUMA & SECONDARY COMMAND HUB*\n"
+            "• *Campus:* Dr. E Borges Road, Parel, Mumbai (Coords: 19.0042° N, 72.8436° E).\n"
+            "• *Bed Capacity:* 700+ Advanced Inpatient Beds with 75 Critical Care beds.\n"
+            "• *Sovereignty Role:* Standby Node 2 Mainframe replica with real-time SQLite write-ahead ledger replication.\n"
+            "• *Blood Reserve:* 40 units O-Negative blood and specialized cell separation units.\n"
+            "• *Corridor Access:* Directly adjacent to KEM Hospital via Acharya Donde bypass corridor."
+        )
+
+    # 5. Sion Hospital / LTMMC (Apex Trauma Hub)
+    if any(k in q for k in ("sion", "ltmmc", "ltmgh", "lokmanya")):
         return (
             "🏥 *SION HOSPITAL // LOKMANYA TILAK MUNICIPAL MEDICAL COLLEGE*\n"
             "• *Campus:* Sion West, Central Mumbai Transit Junction (Coords: 19.0360° N, 72.8601° E).\n"
@@ -210,7 +250,7 @@ def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dic
             "• *Disaster Role:* Northern anchor node in Project Syn's Mumbai arterial green corridor."
         )
 
-    # 3. Sir J.J. Group of Hospitals (Byculla)
+    # 6. Sir J.J. Group of Hospitals (Byculla)
     if any(k in q for k in ("jj", "sir jj", "grant medical", "byculla")):
         return (
             "🏥 *SIR J.J. GROUP OF HOSPITALS & GRANT MEDICAL COLLEGE*\n"
@@ -220,7 +260,7 @@ def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dic
             "• *Corridor Access:* Directly accessible via Lalbaug Flyover Ramp and Eastern Freeway."
         )
 
-    # 4. B.Y.L. Nair Charitable Hospital (Mumbai Central)
+    # 7. B.Y.L. Nair Charitable Hospital (Mumbai Central)
     if any(k in q for k in ("nair", "byl nair", "topiwala")):
         return (
             "🏥 *B.Y.L. NAIR CHARITABLE HOSPITAL & T.N. MEDICAL COLLEGE*\n"
@@ -229,7 +269,7 @@ def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dic
             "• *Specialty:* Advanced cardiology, neurosurgery, and infectious disease triage."
         )
 
-    # 5. Lilavati Hospital & Research Centre (Bandra)
+    # 8. Lilavati Hospital & Research Centre (Bandra)
     if any(k in q for k in ("lilavati", "bandra")):
         return (
             "🏥 *LILAVATI HOSPITAL & RESEARCH CENTRE*\n"
@@ -238,47 +278,30 @@ def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dic
             "• *Corridor:* Instant access to Bandra-Worli Sea Link for south Mumbai rapid transit."
         )
 
-    # 6. Legacy queries (AIIMS / GMC / Mayo)
-    if any(k in q for k in ("aims", "aiims", "gmc", "mayo")):
+    # 9. Beds / Capacity
+    if any(k in q for k in ("bed", "beds", "capacity", "occupan", "vacan", "icu")):
         return (
-            "🏥 *PROJECT SYN MUMBAI METROPOLITAN OPERATIONAL CORE*\n"
-            "• *Command Apex:* **KEM Hospital & Seth GS Medical College, Parel** (1,800+ Beds, 180 ICU beds).\n"
-            "• *Apex Trauma:* **Sion Hospital (LTMMC)** (1,400 Beds, 120 ICU beds).\n"
-            "• *South Hub:* **Sir J.J. Hospital, Byculla** (2,800 Beds, 130 ICU beds).\n"
-            "• *West Corridor:* **Lilavati Hospital & Nanavati Max Super Specialty**.\n"
-            "• *Zero-Trust Security:* CPACF Hardware HMAC Signed, Sub-GHz P2P Mesh Active."
-        )
-        return (
-            "🏥 *WOCKHARDT SUPER SPECIALTY HOSPITAL*\n"
-            "• *Campus:* 1643 North Ambazari Road, Shankar Nagar, Mumbai (Coords: 21.1400° N, 79.0800° E).\n"
-            "• *Specialty:* Apex Cardiac, Neuro-Sciences, Critical Care, and Organ Transplant Hub.\n"
-            "• *Capacity:* 150 Critical Care Beds, 3 Advanced Digital Cath Labs, and Ultra-Clean Transplant OTs.\n"
-            "• *Green Corridor:* Designated organ recipient hub for air-ambulance donor organ transfers."
+            "🛏️ **MUMBAI METROPOLITAN TRAUMA & ICU BED INVENTORY**\n\n"
+            "• **KEM Hospital & Seth GS (Command Apex):** 38 Available (SICU: 12, Trauma: 16, MICU: 10)\n"
+            "• **Tata Memorial Hospital (Trauma Hub):** 32 Available (Surgical ICU: 18, Onco-Trauma: 14)\n"
+            "• **Sion Hospital (LTMGH Apex):** 24 Available (Regional Trauma Center)\n"
+            "• **Sir J.J. Hospital Byculla:** 29 Available (State Flagship Referral ICU)\n"
+            "• **B.Y.L. Nair Hospital:** 18 Available (Mumbai Central Critical Care)\n"
+            "• **Lilavati & Nanavati Max:** 15 Available (Super Specialty Arterial Backup)\n\n"
+            "📊 **Total Network Vacancy:** 156 Critical Care Beds immediately routable under deterministic Dijkstra dispatch."
         )
 
-    # 6. Beds / Capacity
-    if any(k in q for k in ("bed", "beds", "capacity", "occupan", "vacan")):
-        return (
-            "🛏️ *NAGPUR METROPOLITAN TRAUMA & ICU BED INVENTORY*\n"
-            "• *Tata Memorial Hospital:* 35 Available (Trauma/Apex ICU)\n"
-            "• *KEM Hospital Parel:* 18 Available (Regional Trauma Center)\n"
-            "• *Sion Hospital (LTMGH):* 12 Available (Casualty Influx)\n"
-            "• *Lata Mangeshkar:* 9 Available (General ICU)\n"
-            "• *Wockhardt Hospital:* 14 Available (Cardiac/Neuro ICU)\n"
-            "• *Total Network Vacancy:* 88 Critical Care Beds immediately routable."
-        )
-
-    # 7. Blood / Supplies / Diesel
+    # 10. Blood / Supplies / Diesel
     if any(k in q for k in ("blood", "o-neg", "diesel", "fuel", "stock", "oxygen")):
         return (
-            "🏥 *PROJECT SYN CRITICAL RESOURCE INVENTORY*\n"
-            f"• *O-Neg Blood Reserves:* {blood_val} Units across GMC, Mayo & AIIMS (Threshold: >10 units).\n"
-            f"• *Emergency Genset Diesel:* {diesel_val} Liters (~34.2 hours continuous full-load runtime).\n"
-            "• *Medical Oxygen Plants:* GMC (1,200 LPM), AIIMS (1,000 LPM) — 55 PSI line pressure stable.\n"
-            "• *Trauma Surgical Kits:* 42 Sterilized Kits staged in Level-1 resuscitation bays."
+            "🏥 **PROJECT SYN CRITICAL RESOURCE INVENTORY (MUMBAI HEALTH GRID)**\n\n"
+            f"• **O-Neg Blood Reserves:** {blood_val} Units across KEM, Tata Memorial & Sion Hospital (Buffer Threshold: >15 units).\n"
+            f"• **Emergency Genset Diesel:** {diesel_val} Liters (~74.5 hours continuous full-load runtime backed by dual 22kV BEST feeders).\n"
+            "• **Cryogenic Oxygen Plants:** KEM (13,000L Liquid Oxygen tank at 4.2 bar), Sion (9,500L) — Line pressures nominal.\n"
+            "• **Trauma Surgical Kits:** 54 Pre-sterilized laparotomy and vascular repair kits staged in Level-1 resuscitation bays."
         )
 
-    # 8. Jev AI / TypeSafe AI Architecture Status
+    # 11. Jev AI / TypeSafe AI Architecture Status
     if any(k in q for k in ("jev", "typesafe", "rlcd")):
         return (
             "🤖 *JEV AI & SYSTEM ONE DECISION ARCHITECTURE REPORT*\n"
@@ -289,23 +312,43 @@ def generate_local_hospital_intelligence(query: str, extra_metrics: Optional[Dic
             "• *Cloud Availability:* Jev weights remain proprietary and hosted on TypeSafe AI's closed early-access API, while Project Syn provides 100% sovereign mainframe execution."
         )
 
-    # 9. Flood / Monsoon / Road Weather
+    # 12. Flood / Monsoon / Road Weather
     if any(k in q for k in ("flood", "water", "rain", "monsoon", "weather", "route", "corridor")):
         return (
-            f"🌊 *NAGPUR METROPOLITAN HYDROLOGICAL & ROUTING STATUS*\n"
-            f"• *Nag River Flood Gauge:* {flood_idx}m (Safe Threshold: <0.45m).\n"
-            "• *Dr. Babasaheb Ambedkar Road Elevated Corridor:* CLEAR & OPEN (Primary 18.5 min transit to AIIMS).\n"
-            "• *Hindmata Junction Metro Interchange:* Arterial traffic moving freely (Congestion: 38%).\n"
-            "• *Dijkstra Active Route:* KEM Hospital Parel -> Medical Square -> Ambedkar Elevated Flyover -> Tata Memorial Hospital."
+            f"🌊 **MUMBAI METROPOLITAN HYDROLOGICAL & ROUTING STATUS**\n\n"
+            f"• **Hindmata & Parel TT Flood Level:** {flood_idx}m (Safe Drainage Threshold: <0.30m).\n"
+            "• **Dr. Babasaheb Ambedkar Road Elevated Flyover:** CLEAR & OPEN (Primary 9.2 min green corridor from Sion to KEM Hospital).\n"
+            "• **Bandra-Worli Sea Link Express Corridor:** OPEN (Speed limit: 80 km/h, transit latency: 11 mins).\n"
+            "• **Dijkstra Active Route:** KEM Hospital Parel -> Lalbaug Flyover Elevated Corridor -> Sir JJ Hospital & Byculla."
         )
 
-    # 10. General Trilingual Disaster Response
+    # 13. Marathi queries
+    if any(k in q for k in ("मदत", "रुग्णवाहिका", "नमस्कार", "डॉक्टर", "रक्त", "पूर", "मराठी")):
+        return (
+            "🚩 **प्रोजेक्ट सिन आपत्कालीन नियंत्रण कक्ष // IBM LINUXONE s390x**\n\n"
+            "नमस्कार. मुंबई आपत्कालीन आरोग्य यंत्रणा (KEM रुग्णालय व टाटा मेमोरियल ट्रॉमा हब) पूर्णपणे सज्ज आहे.\n\n"
+            "• **तातडीची मदत:** केईएम रुग्णालय व सायन रुग्णालयातील आयसीयू बेड्स आणि जीवनरक्षक रक्तसाठा (O-Negative) उपलब्ध आहे.\n"
+            "• **ग्रीन कॉरिडॉर:** डॉ. बाबासाहेब आंबेडकर उड्डाणपूल व लालबाग फ्लायओव्हर रुग्णवाहिकांसाठी मोकळा करण्यात आला आहे.\n"
+            "• **संपर्क:** सायन किंवा केईएम ट्रॉमा विभागाशी थेट संपर्क साधण्यासाठी 'रुग्णवाहिका पाठवा' अशी सूचना द्या."
+        )
+
+    # 14. Hindi queries
+    if any(k in q for k in ("मदद", "अस्पताल", "नमस्ते", "इलाज", "खून", "बाढ़", "हिंदी")):
+        return (
+            "🇮🇳 **प्रोजेक्ट सिन आपातकालीन नियंत्रण कक्ष // IBM LINUXONE s390x**\n\n"
+            "नमस्ते। मुंबई महानगरीय स्वास्थ्य ग्रिड (केईएम अस्पताल कमांड एपेक्स एवं टाटा मेमोरियल ट्रॉमा हब) पूरी तरह सक्रिय है।\n\n"
+            "• **तत्काल सहायता:** केईएम अस्पताल में लेवल-1 ट्रॉमा आईसीयू और ओ-नेगेटिव ब्लड बैंक रिजर्व पूरी तरह तैयार हैं।\n"
+            "• **ग्रीन कॉरिडोर:** लालबाग फ्लाईओवर एवं डॉ. आंबेडकर रोड एलिवेटेड कॉरिडोर एम्बुलेंस के लिए निर्बाध रूप से खुला है।\n"
+            "• **निर्देश:** किसी भी आपातकालीन स्थिति में तुरंत 'एम्बुलेंस भेजें' या 'केईएम जानकारी' लिखें।"
+        )
+
+    # 15. General Trilingual Disaster Response (Default Fallback)
     return (
-        f"🛡️ *PROJECT SYN // AEGIS AI INCIDENT COMMANDER (s390x LOCAL)*\n"
-        f"• *Query:* \"{query}\"\n"
-        f"• *Grid Health:* Nominal (Voltage: 220V, Zero-Trust CPACF Gate: 100% Valid).\n"
-        f"• *Hospital Network:* All 5 Trauma Centers (AIIMS, GMC, Mayo, Lata Mangeshkar, Wockhardt) connected via Sub-GHz Mesh.\n"
-        f"• *Status:* Type any hospital name ('AIIMS', 'GMC', 'Mayo'), 'beds', 'stock', or 'flood' for full tactical telemetry."
+        f"🛡️ **PROJECT SYN // AI INCIDENT COMMANDER (IBM LINUXONE s390x)**\n\n"
+        f"• **Query Acknowledged:** \"{query}\"\n"
+        f"• **Metropolitan Health Grid:** KEM Hospital Command Apex & Tata Memorial Trauma Hub synchronized (12/12 Facilities Online).\n"
+        f"• **Zero-Trust Security:** CPACF Hardware HMAC-SHA256 Gate Active (100% telemetry verified).\n"
+        f"• **Quick Directives:** Type 'beds', 'blood', 'KEM info', 'Tata Memorial', 'flood status', or describe your emergency for instantaneous triage."
     )
 
 
@@ -918,7 +961,7 @@ async def telegram_bot_listener():
                                 f"• `/evacuate` - Building fire & structural status\n"
                                 f"• `/mute` - Silence automated background broadcasts\n"
                                 f"• `/unmute` - Resume automated background broadcasts\n\n"
-                                f"💬 Or issue directives: *\"send ambulance immediately\"*, *\"instruct nearest hospital for A+ blood\"*, *\"tell me info about aiims\"*, or any math/logic query!"
+                                f"💬 Or issue directives: *\"send ambulance immediately\"*, *\"instruct nearest hospital for A+ blood\"*, *\"tell me info about kem hospital\"*, or any math/logic query!"
                             )
                         elif cmd == "/mute":
                             set_telegram_broadcast_status(False)
@@ -957,12 +1000,12 @@ async def telegram_bot_listener():
                             )
                         elif cmd == "/beds":
                             reply = (
-                                f"🛏️ *NAGPUR TRAUMA BED INVENTORY*\n"
-                                f"• *KEM Hospital Parel (Trauma ICU):* 18 Beds Available\n"
-                                f"• *Tata Memorial Hospital (Apex Triage):* 35 Beds Available\n"
-                                f"• *Sion Hospital (LTMGH):* 12 Beds Available\n"
-                                f"• *Lata Mangeshkar:* 9 Beds Available\n"
-                                f"• *Wockhardt Cardiac Center:* 14 Beds Available"
+                                f"🛏️ *MUMBAI TRAUMA BED INVENTORY*\n"
+                                f"• *KEM Hospital Parel (Command Apex):* 38 Beds Available\n"
+                                f"• *Tata Memorial Hospital (Trauma Hub):* 32 Beds Available\n"
+                                f"• *Sion Hospital (LTMGH Apex):* 24 Beds Available\n"
+                                f"• *Sir J.J. Hospital Byculla:* 29 Beds Available\n"
+                                f"• *B.Y.L. Nair Hospital Mumbai Central:* 18 Beds Available"
                             )
                         elif cmd == "/evacuate":
                             reply = (

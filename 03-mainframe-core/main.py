@@ -676,14 +676,14 @@ async def get_system_health():
         "dijkstra_router": {
             "name": "Mumbai Metropolitan Dijkstra Ambulance Router",
             "status": "HEALTHY",
-            "hospitals_covered": 5,
-            "corridors_active": "Wardha Rd Elevated & AIIMS Bypass"
+            "hospitals_covered": 12,
+            "corridors_active": "Lalbaug Flyover & Dr. Ambedkar Rd Elevated Corridor"
         },
         "ai_model_engine": {
             "name": "Multilingual Dispatch AI Engine",
             "status": "HEALTHY",
             "active_provider": ai_status.get("provider", "Google Gemini"),
-            "active_model": ai_status.get("active_model", "gemini-3.8-flash"),
+            "active_model": ai_status.get("active_model", "gemini-3-flash-preview"),
             "mode": ai_status.get("mode", "auto"),
             "token_window": ai_status.get("token_limit", "1,048,576 tokens"),
             "failover_standby": "OpenRouter Llama 3.3 70B & s390x Local Engine"
@@ -691,7 +691,7 @@ async def get_system_health():
         "sub_ghz_mesh": {
             "name": "Offline P2P Sub-GHz Radio Mesh (868/915 MHz)",
             "status": "HEALTHY",
-            "backhaul_nodes": "GMC, Mayo, AIIMS (3/3 Live)",
+            "backhaul_nodes": "KEM Hospital, Sion Hospital, Tata Memorial (3/3 Live)",
             "field_staff_nodes": "ICU Nurse, Ambulance Alpha, Paramedic Swarm"
         }
     }
@@ -794,15 +794,18 @@ async def chat_with_incident_commander(req: AIChatRequest):
             # Air-gapped Distilled Cognitive Reasoning from 70B models
             cog = get_distilled_engine().infer_offline_reasoning(query)
             local_med = generate_local_hospital_intelligence(query)
-            resp_text = (
-                f"🧠 **[IBM LINUXONE s390x DISTILLED COGNITIVE ENGINE — AIR-GAPPED]**\n\n"
-                f"{cog['offline_reasoning']}\n\n"
-                f"📋 **Immediate Action Directive:** {cog['recommended_action']}\n"
-                f"• **Urgency Assessment:** `{cog['urgency_level']}`\n"
-                f"• **Local Grid Context:** {local_med}\n"
-                f"• **Knowledge Distillation Base:** {cog['distilled_model']}\n"
-                f"• **Hardware State:** CPACF Hardware Crypto Active | 100% Zero Internet Dependency"
-            )
+            q_lower = query.lower()
+            if any(k in q_lower for k in ("hi", "hello", "hey", "emergency", "accident", "trauma", "chest pain", "bleeding", "kem", "tata", "sion", "jj", "nair", "lilavati", "bed", "blood", "flood", "मदत", "मदद")):
+                resp_text = local_med
+            else:
+                resp_text = (
+                    f"🧠 **[IBM LINUXONE s390x DISTILLED COGNITIVE ENGINE — AIR-GAPPED]**\n\n"
+                    f"{cog['offline_reasoning']}\n\n"
+                    f"📋 **Immediate Action Directive:** {cog['recommended_action']}\n"
+                    f"• **Urgency Assessment:** `{cog['urgency_level']}`\n"
+                    f"• **Knowledge Distillation Base:** {cog['distilled_model']}\n"
+                    f"• **Hardware State:** CPACF Hardware Crypto Active | 100% Zero Internet Dependency"
+                )
             provider_used = "IBM LinuxONE Distilled Cognitive Core"
         else:
             # Explicit provider selection or Auto Cascade
@@ -1019,26 +1022,29 @@ async def stream_incident_commander(req: AIChatRequest):
         if current_mode == "local" or CURRENT_SOVEREIGNTY_MODE in ("sovereign", "degraded"):
             cog = get_distilled_engine().infer_offline_reasoning(query)
             local_med = generate_local_hospital_intelligence(query)
-            resp_text = (
-                f"🧠 **[IBM LINUXONE s390x DISTILLED COGNITIVE ENGINE — AIR-GAPPED]**\n\n"
-                f"{cog['offline_reasoning']}\n\n"
-                f"📋 **Immediate Action Directive:** {cog['recommended_action']}\n"
-                f"• **Urgency Assessment:** `{cog['urgency_level']}`\n"
-                f"• **Local Grid Context:** {local_med}\n"
-                f"• **Knowledge Distillation Base:** {cog['distilled_model']}\n"
-                f"• **Hardware State:** CPACF Hardware Crypto Active | 100% Zero Internet Dependency"
-            )
+            q_lower = query.lower()
+            if any(k in q_lower for k in ("hi", "hello", "hey", "emergency", "accident", "trauma", "chest pain", "bleeding", "kem", "tata", "sion", "jj", "nair", "lilavati", "bed", "blood", "flood", "मदत", "मदद")):
+                resp_text = local_med
+            else:
+                resp_text = (
+                    f"🧠 **[IBM LINUXONE s390x DISTILLED COGNITIVE ENGINE — AIR-GAPPED]**\n\n"
+                    f"{cog['offline_reasoning']}\n\n"
+                    f"📋 **Immediate Action Directive:** {cog['recommended_action']}\n"
+                    f"• **Urgency Assessment:** `{cog['urgency_level']}`\n"
+                    f"• **Knowledge Distillation Base:** {cog['distilled_model']}\n"
+                    f"• **Hardware State:** CPACF Hardware Crypto Active | 100% Zero Internet Dependency"
+                )
             provider_used = "IBM LinuxONE Distilled Cognitive Core"
         else:
-            text_or, model_or = generate_openrouter_cascade(system_prompt)
-            if text_or:
-                resp_text = text_or
-                provider_used = f"OpenRouter AI ({model_or})"
+            text_gem, model_gem = generate_gemini_cascade(system_prompt)
+            if text_gem:
+                resp_text = text_gem
+                provider_used = f"Google Gemini ({model_gem})"
             else:
-                text_gem, model_gem = generate_gemini_cascade(system_prompt)
-                if text_gem:
-                    resp_text = text_gem
-                    provider_used = f"Google Gemini Failover ({model_gem})"
+                text_or, model_or = generate_openrouter_cascade(system_prompt)
+                if text_or:
+                    resp_text = text_or
+                    provider_used = f"OpenRouter AI ({model_or})"
 
         if not resp_text:
             resp_text = generate_local_hospital_intelligence(query)

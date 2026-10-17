@@ -100,8 +100,6 @@ MUMBAI_ROAD_CORRIDORS = {
     ]
 }
 
-# Alias for backward compatibility
-NAGPUR_ROAD_CORRIDORS = MUMBAI_ROAD_CORRIDORS
 DEFAULT_ROAD_COORDINATES = MUMBAI_ROAD_CORRIDORS["Lalbaug_Flyover_Ambulance_Corridor"]
 
 
