@@ -18,6 +18,8 @@ credentials/
 .env.local
 .env.*.local
 *.env
+config.js
+01-command-center/config.js
 
 # Python & Native Environments
 __pycache__/
