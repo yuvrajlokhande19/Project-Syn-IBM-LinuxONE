@@ -1,0 +1,29 @@
+{
+  "model_type": "RandomForestClassifier",
+  "library": "scikit-learn",
+  "features": [
+    "grid_voltage",
+    "flood_index",
+    "route_congestion"
+  ],
+  "feature_order": [
+    "grid_voltage",
+    "flood_index",
+    "route_congestion"
+  ],
+  "n_estimators": 100,
+  "random_state": 42,
+  "output_convention": {
+    "raw_predict": {
+      "0": "nominal",
+      "1": "anomaly"
+    }
+  },
+  "backend_compatibility_note": "Directly compatible with Pair 3's queue_worker.py check: `if prediction[0] == 1: is_anomaly = True`. Outputs 0 for nominal sensor vectors and 1 for infrastructure anomalies.",
+  "evaluation_metrics": {
+    "accuracy": 0.9885,
+    "precision": 1.0,
+    "recall": 0.7982456140350878,
+    "f1_score": 0.8878048780487805
+  }
+}
