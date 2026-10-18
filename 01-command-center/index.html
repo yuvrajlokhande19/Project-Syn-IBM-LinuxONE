@@ -802,7 +802,7 @@
         <!-- TAB 2: TACTICAL GIS MATRIX                                           -->
         <!-- ==================================================================== -->
         <section id="tab-gis" class="tab-panel space-y-4 hidden">
-            <div class="admin-card p-4 flex flex-col h-[750px]">
+            <div class="admin-card p-3 sm:p-4 flex flex-col h-[72vh] min-h-[540px] max-h-[820px]">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-3 border-b border-zinc-800 gap-2">
                     <div>
                         <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -832,12 +832,16 @@
                 </div>
 
                 <div class="flex-1 my-2 relative rounded-lg overflow-hidden border border-zinc-800 tactical-night-map">
-                    <!-- CARTO Basemaps Floating Control -->
-                    <div class="absolute top-3 right-3 z-[500] flex items-center gap-1 bg-black/85 backdrop-blur-md px-2.5 py-1.5 rounded-md border border-zinc-700 text-xs font-mono shadow-lg">
-                        <span class="text-zinc-400 font-bold text-[10px] uppercase mr-1">CARTO BASEMAP:</span>
-                        <button id="btn-carto-dark" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-sky-600 text-white transition">Dark Matter</button>
-                        <button id="btn-carto-voyager" class="px-2 py-0.5 rounded text-[11px] bg-zinc-800 text-zinc-300 hover:text-white transition">Voyager (Roads)</button>
-                        <button id="btn-carto-light" class="px-2 py-0.5 rounded text-[11px] bg-zinc-800 text-zinc-300 hover:text-white transition">Positron</button>
+                    <!-- CARTO Basemaps & Zoom / Center Floating Controls -->
+                    <div class="absolute top-3 right-3 z-[500] flex flex-wrap items-center gap-1.5 bg-black/85 backdrop-blur-md px-2.5 py-1.5 rounded-md border border-zinc-700 text-xs font-mono shadow-lg">
+                        <span class="text-zinc-400 font-bold text-[10px] uppercase mr-1">MAP:</span>
+                        <button id="btn-carto-dark" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-sky-600 text-white transition cursor-pointer">Dark</button>
+                        <button id="btn-carto-voyager" class="px-2 py-0.5 rounded text-[11px] bg-zinc-800 text-zinc-300 hover:text-white transition cursor-pointer">Roads</button>
+                        <button id="btn-carto-light" class="px-2 py-0.5 rounded text-[11px] bg-zinc-800 text-zinc-300 hover:text-white transition cursor-pointer">Positron</button>
+                        <span class="text-zinc-600 mx-0.5">|</span>
+                        <button onclick="if(map) map.zoomIn()" class="px-2 py-0.5 rounded text-xs bg-zinc-800 hover:bg-zinc-700 text-white font-bold transition cursor-pointer" title="Zoom In">+</button>
+                        <button onclick="if(map) map.zoomOut()" class="px-2 py-0.5 rounded text-xs bg-zinc-800 hover:bg-zinc-700 text-white font-bold transition cursor-pointer" title="Zoom Out">-</button>
+                        <button onclick="if(map) map.flyTo([19.0400, 72.8500], 11, {duration: 0.8})" class="px-2 py-0.5 rounded text-[10px] bg-sky-950 hover:bg-sky-900 text-sky-300 border border-sky-800 font-bold transition cursor-pointer" title="Reset View">🎯 Center Mumbai</button>
                     </div>
                     <div id="gisMap" class="w-full h-full"></div>
                 </div>
@@ -1235,7 +1239,7 @@
                                 <span class="font-bold text-sky-400">TIER 1: PRIMARY CLOUD</span>
                                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">NORMAL</span>
                             </div>
-                            <div class="text-[11px] text-white font-bold">Google Gemini 1.5 Pro / Flash</div>
+                            <div class="text-[11px] text-white font-bold">Google Gemini 3 Flash / 2.5 Pro</div>
                             <div class="text-[10px] text-zinc-400">1,000,000 Tokens · High-speed multi-hospital reasoning</div>
                             <div class="text-[9px] text-emerald-400">● 100% Quota Available</div>
                         </div>
@@ -1246,7 +1250,7 @@
                                 <span class="font-bold text-zinc-300">TIER 2: RATE-LIMIT FAILOVER</span>
                                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">STANDBY</span>
                             </div>
-                            <div class="text-[11px] text-white font-bold">Gemini 1.5 Flash-8B / Gemini-Pro</div>
+                            <div class="text-[11px] text-white font-bold">Gemini 3.1 Pro / Flash-Lite</div>
                             <div class="text-[10px] text-zinc-400">Triggers on HTTP 429 / Quota saturation</div>
                             <div class="text-[9px] text-zinc-500">Auto-engages &lt;0.4s</div>
                         </div>
@@ -1258,7 +1262,7 @@
                                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">STANDBY</span>
                             </div>
                             <div class="text-[11px] text-white font-bold">OpenRouter Free Models</div>
-                            <div class="text-[10px] text-zinc-400">Meta LLaMA 3.2 3B · Mistral 7B · Qwen 2.5</div>
+                            <div class="text-[10px] text-zinc-400">Meta LLaMA 3.3 70B · Qwen 2.5 72B · DeepSeek R1</div>
                             <div class="text-[9px] text-zinc-500">Zero-cost multi-cloud redundancy</div>
                         </div>
 
@@ -2455,8 +2459,16 @@ Type any authorized command below or click a quick action above to execute.</div
             });
 
             // Panoramic Mumbai Coastal View: Arabian Sea on the West, 35 Trauma Hospitals, and Trans-Harbour Corridor
-            map = L.map('gisMap', { zoomControl: false, layers: [cartoDark] }).setView([19.0400, 72.8500], 11);
+            map = L.map('gisMap', {
+                zoomControl: false,
+                scrollWheelZoom: false,
+                layers: [cartoDark]
+            }).setView([19.0400, 72.8500], 11);
             currentBasemap = cartoDark;
+
+            // Enable smooth scrollWheelZoom only when map is actively focused/clicked
+            map.on('click', () => { map.scrollWheelZoom.enable(); });
+            map.getContainer().addEventListener('mouseleave', () => { map.scrollWheelZoom.disable(); });
 
             hospitalLayerGroup = L.layerGroup().addTo(map);
             corridorsLayerGroup = L.layerGroup().addTo(map);
@@ -4452,16 +4464,16 @@ Type any authorized command below or click a quick action above to execute.</div
             [t1, t2, t3, t4].forEach(t => t && (t.className = "p-3 rounded bg-zinc-950 border border-zinc-800 space-y-1.5"));
 
             if (tier === 'google') {
-                if (badge) badge.innerText = "ACTIVE: TIER 1 (GOOGLE GEMINI 1.5 PRO)";
+                if (badge) badge.innerText = "ACTIVE: TIER 1 (GOOGLE GEMINI 3 FLASH)";
                 if (t1) t1.className = "p-3 rounded bg-zinc-950 border-2 border-sky-500 shadow-lg space-y-1.5";
             } else if (tier === 'openrouter') {
-                if (badge) badge.innerText = "ACTIVE: TIER 3 (OPENROUTER FREE CASCADE)";
+                if (badge) badge.innerText = "ACTIVE: TIER 3 (OPENROUTER LLaMA 3.3 70B)";
                 if (t3) t3.className = "p-3 rounded bg-zinc-950 border-2 border-amber-500 shadow-lg space-y-1.5";
             } else if (tier === 'local') {
                 if (badge) badge.innerText = "ACTIVE: TIER 4 (IBM s390x GRANITE 1.5B - 1.18GB)";
                 if (t4) t4.className = "p-3 rounded bg-zinc-950 border-2 border-emerald-500 shadow-lg space-y-1.5";
             } else {
-                if (badge) badge.innerText = "ACTIVE: AUTO-CASCADE (GEMINI -> OPENROUTER -> s390x)";
+                if (badge) badge.innerText = "ACTIVE: AUTO-CASCADE (GEMINI 3 -> OPENROUTER -> s390x)";
                 if (t1) t1.className = "p-3 rounded bg-zinc-950 border border-sky-500/80 space-y-1.5";
                 if (t4) t4.className = "p-3 rounded bg-zinc-950 border border-emerald-800 space-y-1.5";
             }
