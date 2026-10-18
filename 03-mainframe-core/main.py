@@ -123,6 +123,11 @@ frontend_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../01-
 if os.path.exists(frontend_path):
     app.mount("/ui", StaticFiles(directory=frontend_path, html=True), name="ui")
 
+# Static System Guide & Setup Documentation Mounting
+docs_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../docs")
+if os.path.exists(docs_path):
+    app.mount("/guide", StaticFiles(directory=docs_path, html=True), name="guide")
+
 @app.get("/", include_in_schema=False)
 async def root_redirect():
     return RedirectResponse(url="/ui/")
